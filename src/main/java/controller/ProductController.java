@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import service.CategoryService;
 import service.ProductService;
 import service.impl.ProductServiceImpl;
@@ -29,12 +30,7 @@ public class ProductController {
 
     @GetMapping("/")
     public String index(Model model, String Search) {
-//                String txtSearch = request.getParameter("Search");
-
         List<Product> products = new ArrayList<>();
-//        products = productDAO.findAll();
-
-
         if (Search == null) {
             products = productService.findAll();
         } else {
@@ -44,7 +40,6 @@ public class ProductController {
                     "    </a>");
         }
         model.addAttribute("products", products);
-//        request.setAttribute("products", products);
         List<Category> categories = findAllCategory(products);
         model.addAttribute("categories", categories);
         return "index";
@@ -84,9 +79,9 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/updateProduct")
-    public String updateProduct(Model model, int id, String name, int price, int quantity, String color, String description, int categoryId) throws SQLException {
-        Product product = new Product(id, name, price, quantity, color, description, categoryId);
+    @PostMapping("/edit")
+//    public String updateProduct(Model model, int id, String name, int price, int quantity, String color, String description, int categoryId) throws SQLException {
+    public String updateProduct(Model model,Product product) throws SQLException{
         productService.update(product);
         model.addAttribute("message", "Product information was updated");
         return "edit";
