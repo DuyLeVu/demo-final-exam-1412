@@ -21,14 +21,14 @@
 <p>
     <a href="/">Back to product list</a>
 </p>
-<form method="post">
+<form action="/updateProduct" method="post">
     <fieldset>
         <legend>Product infomation</legend>
         <table>
-            <%--            <tr>--%>
-            <%--                <td>ID:</td>--%>
-            <%--                <td><input type="text" name="id" id="id"></td>--%>
-            <%--            </tr>--%>
+            <tr>
+                <td>ID:</td>
+                <td><input type="text" name="id" id="id" value="${product.id}"></td>
+            </tr>
             <tr>
                 <td>Name:</td>
                 <td><input type="text" name="name" id="name"></td>

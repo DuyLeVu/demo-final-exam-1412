@@ -39,14 +39,14 @@ public class ProductController {
             products = productService.findAll();
         } else {
             products = productService.findByName(Search);
+            model.addAttribute("backToProducts", "<a href=\"/\">Back to products\n" +
+                    "        <list></list>\n" +
+                    "    </a>");
         }
         model.addAttribute("products", products);
 //        request.setAttribute("products", products);
         List<Category> categories = findAllCategory(products);
         model.addAttribute("categories", categories);
-        model.addAttribute("backToProducts", "<a href=\"/\">Back to products\n" +
-                "        <list></list>\n" +
-                "    </a>");
         return "index";
     }
 
@@ -71,7 +71,7 @@ public class ProductController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(Model model, int id){
+    public String showEditForm(Model model, int id) {
         Product product = productService.findById(id);
 
         if (product == null) {
@@ -85,31 +85,11 @@ public class ProductController {
     }
 
     @PostMapping("/updateProduct")
-    public String updateProduct(Model model, String name, int price, int quantity, String color, String description, int categoryId) {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        int price = Integer.parseInt(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        String color = request.getParameter("color");
-        String description = request.getParameter("description");
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+    public String updateProduct(Model model, int id, String name, int price, int quantity, String color, String description, int categoryId) throws SQLException {
         Product product = new Product(id, name, price, quantity, color, description, categoryId);
-        try {
-            productDAO.update(product);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        request.setAttribute("product", product);
-        request.setAttribute("message", "Product information was updated");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("product/edit.jsp");
-
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        productService.update(product);
+        model.addAttribute("message", "Product information was updated");
+        return "edit";
     }
 
     private List<Category> findAllCategory(List<Product> products) {

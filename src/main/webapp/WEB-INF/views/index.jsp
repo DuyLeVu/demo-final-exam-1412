@@ -41,7 +41,7 @@
         <td><c:out value="${products.get(i).description}"/></td>
         <td><c:out value="${categories.get(i).name}"/></td>
         <td>
-          <a href="/edit&id=${products.get(i).id}">Edit</a>
+          <a href="/edit?id=${products.get(i).id}">Edit</a>
           <a href="/products?action=delete&id=${products.get(i).id}">Delete</a>
         </td>
       </tr>
@@ -52,9 +52,9 @@
     <input type="text" placeholder="Search" name="Search">
     <input type="submit" value="Search">
   </form>
-  <p>
-   ${backToProducts}
-  </p>
+    <c:if test="${backToProducts != null}">
+      <span class="message">${backToProducts}</span>
+    </c:if>
 </div>
 </body>
 </html>
